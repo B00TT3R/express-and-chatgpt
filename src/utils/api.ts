@@ -1,8 +1,8 @@
 import axios from 'axios';
-import dotenv from 'dotenv'
 
-dotenv.config()
+
+
 const api = axios.create({
-    baseURL: process.env.BASE_URL
+    baseURL: import.meta.env.VITE_BASE_URL,
 })
 export default api
