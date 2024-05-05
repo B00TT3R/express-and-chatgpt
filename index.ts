@@ -78,7 +78,7 @@ app.get('/buttonClick', async (req, res) => {
     lightState = !lightState
     wss.clients.forEach((client) => {
         if (client.readyState === client.OPEN) {
-            client.send(JSON.stringify({"op":"light", "message":lightState?"on":"false"}));
+            client.send(JSON.stringify({"op":"light", "message":lightState}));
         }
     });
     
