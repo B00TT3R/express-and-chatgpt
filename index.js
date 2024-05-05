@@ -19,6 +19,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 })
 
+app.get('/buttonClick', async (req, res) => {
+    
+    console.log("buttonClick")
+    res.setHeader('Content-Type', 'application/json')
+    res.send({message:"Chamado recebido", req, res})
+})
+
+
 app.get('/knowledge', async (req, res) => {
     const quote = await knowledge()
     console.log(quote)
