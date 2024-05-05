@@ -20,10 +20,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/buttonClick', async (req, res) => {
-    
     console.log("buttonClick")
-    res.setHeader('Content-Type', 'application/json')
-    res.send({message:"Chamado recebido", req, res})
+    res.send({message:"Chamado recebido"})  
 })
 
 
