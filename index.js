@@ -11,13 +11,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express()
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'dist')));
 const port = 369
 
 app.get('/', (req, res) => {
     console.log("recebido")
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 })
+
 app.get('/knowledge', async (req, res) => {
     const quote = await knowledge()
     console.log(quote)
