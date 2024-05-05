@@ -18,7 +18,6 @@ app.get('/knowledge', async (req, res) => {
     console.log(quote)
     res.setHeader('Content-Type', 'application/json')
     res.send(removeQuotes(quote.choices?.[0]?.message?.content))
-    
 })
 
 app.listen(port, () => {
