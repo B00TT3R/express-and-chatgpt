@@ -1,16 +1,17 @@
 import express from "express"
+import dotenv from 'dotenv'
+
 import knowledge from "./src/generators/knowledge.js"
 import removeQuotes from "./src/utils/removeQuotes.js"
-import dotenv from 'dotenv'
 
 dotenv.config()
 const app = express()
 const port = 369
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
     console.log("recebido")
-    res.send("olá mundo")
-    
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 })
 app.get('/knowledge', async (req, res) => {
     const quote = await knowledge()
