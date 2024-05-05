@@ -36,25 +36,37 @@ app.get('/knowledge', async (req, res) => {
 const server = app.listen(port, () => {
     console.log(`App iniciado na porta: ${port}`)
 })
-
 const wss = new WebSocketServer({ server });
+
+
 let lightState = false;
+const registeredClients = new Set();
 wss.on("connection", (ws) => {
     console.log("Nova conexão WebSocket");
-
-    
+    const handleClose = () => {
+        console.log("Conexão WebSocket fechada");
+        registeredClients.delete(ws); // Remove do conjunto
+    };
+    ws.on("close", handleClose);
     ws.on("message", (data) => {
         try{
             if (isJSONValid(data.toString())){
                 const dataValue = JSON.parse(String(data.toString()));
                 switch(dataValue.op){
+                    case "register":
+                        registeredClients.add(ws);
+                        ws.send("Você está registrado para atualizações do estado da luz.");
+                    break;
                     case "echo":
-                        wss.clients.forEach((client) => {
-                            if (client.readyState === client.OPEN) {
-                                client.send(`Mensagem ecoada: ${dataValue.message}`);
-                            }
-                        });
-                }
+                        ws.send(`Mensagem ecoada: ${dataValue.message}`);
+                    break
+                    case "getLight":
+                        ws.send(String(lightState));
+                    break
+                    default:
+                        ws.send("Comando não reconhecido")
+                    break
+                }   
             }
             else wss.clients.forEach((client) => {
                 if (client.readyState === client.OPEN) {
@@ -76,9 +88,10 @@ app.get('/buttonClick', async (req, res) => {
     console.log("buttonClick")
     res.send({message:"Chamado recebido"})
     lightState = !lightState
-    wss.clients.forEach((client) => {
+
+    registeredClients.forEach((client:any) => {
         if (client.readyState === client.OPEN) {
-            client.send(JSON.stringify({"op":"light", "message":lightState}));
+            client.send(JSON.stringify({ op: "lightStateChange", state: lightState }));
         }
     });
     
