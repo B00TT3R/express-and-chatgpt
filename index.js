@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 const app = express()
-const port = 3000
+const port = 369
 
 app.get('/', (req, res) => {
     console.log("recebido")
