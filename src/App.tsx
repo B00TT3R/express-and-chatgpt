@@ -1,11 +1,11 @@
-import axios from 'axios'
 import { useState } from 'react'
+import api from './utils/api'
 function App() {
   const [buttonIsLoading, setButtonIsLoading] = useState(false)
   const handleClick = async () => {
     setButtonIsLoading(true)
     try{
-      await axios.get("/buttonClick")
+      await api.get("/buttonClick")
     }
     catch(err){
       console.error(err)
