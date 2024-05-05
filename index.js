@@ -16,7 +16,7 @@ const port = 369
 
 app.get('/', (req, res) => {
     console.log("recebido")
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 })
 app.get('/knowledge', async (req, res) => {
     const quote = await knowledge()
