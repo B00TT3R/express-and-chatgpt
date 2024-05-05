@@ -38,6 +38,7 @@ const server = app.listen(port, () => {
 })
 
 const wss = new WebSocketServer({ server });
+let lightState = false;
 wss.on("connection", (ws) => {
     console.log("Nova conexão WebSocket");
 
@@ -74,9 +75,10 @@ wss.on("connection", (ws) => {
 app.get('/buttonClick', async (req, res) => {
     console.log("buttonClick")
     res.send({message:"Chamado recebido"})
+    lightState = !lightState
     wss.clients.forEach((client) => {
         if (client.readyState === client.OPEN) {
-            client.send(JSON.stringify({"op":"light", "message":"on"}));
+            client.send(JSON.stringify({"op":"light", "message":lightState?"on":"false"}));
         }
     });
     
