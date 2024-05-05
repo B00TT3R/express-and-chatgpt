@@ -55,7 +55,11 @@ wss.on("connection", (ws) => {
                 switch(dataValue.op){
                     case "register":
                         registeredClients.add(ws);
-                        ws.send("Você está registrado para atualizações do estado da luz.");
+                        ws.send(JSON.stringify(
+                            {
+                                "message":"Você está registrado para atualizações do estado da luz.",
+                                "state":lightState,
+                            }));
                     break;
                     case "echo":
                         ws.send(`Mensagem ecoada: ${dataValue.message}`);
