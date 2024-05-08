@@ -45,7 +45,7 @@ wss.on("connection", (ws) => {
     console.log("Nova conexão WebSocket");
     const handleClose = () => {
         console.log("Conexão WebSocket fechada");
-        registeredClients.delete(ws); // Remove do conjunto
+        registeredClients.delete(ws);
     };
     ws.on("close", handleClose);
     ws.on("message", (data) => {
@@ -97,6 +97,28 @@ app.get('/buttonClick', async (req, res) => {
         if (client.readyState === client.OPEN) {
             client.send(JSON.stringify({ op: "lightStateChange", state: lightState }));
         }
-    });
-    
+    });    
+})
+
+app.get('/light/off', async (req, res) => {
+    console.log("turn light off")
+    res.send({message:"Chamado recebido"})
+    lightState = false
+
+    registeredClients.forEach((client:any) => {
+        if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify({ op: "lightStateChange", state: lightState }));
+        }
+    });    
+})
+app.get('/light/on', async (req, res) => {
+    console.log("turn light on")
+    res.send({message:"Chamado recebido"})
+    lightState = true
+
+    registeredClients.forEach((client:any) => {
+        if (client.readyState === client.OPEN) {
+            client.send(JSON.stringify({ op: "lightStateChange", state: lightState }));
+        }
+    });    
 })
